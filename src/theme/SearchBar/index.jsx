@@ -101,12 +101,16 @@ const Search = props => {
   let placeholder
   if (isBrowser) {
     loadAlgolia();
-    placeholder = translate({
+
+    placeholder = window.navigator.platform.startsWith("Mac") ? translate({
+      id: 'theme.SearchBar.placeholder.mac',
+      message:  'Search ⌘+K',
+      description: 'The placeholder text for the search bar on Mac'
+    }) : translate({
       id: 'theme.SearchBar.placeholder',
-      message: window.navigator.platform.startsWith("Mac") ?
-      'Search ⌘+K' : 'Search Ctrl+K',
+      message:  'Search Ctrl+K',
       description: 'The placeholder text for the search bar'
-    })
+    });
 
   // auto focus search bar on page load
   useEffect(() => {
