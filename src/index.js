@@ -1,14 +1,17 @@
-const fs = require('fs')
-const os = require('os')
-const path = require('path')
-const lunr = require('lunr')
-const { Worker } = require('worker_threads')
-const Guage = require('gauge')
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import lunr from 'lunr'
+import { Worker } from 'worker_threads'
+import cliProgress from 'cli-progress'
 
-// local imports
-const utils = require('./utils')
+import * as utils from './utils.js'
 
-module.exports = function (context, options) {
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+export default function (context, options) {
   options = options || {};
   let languages = undefined;
 
@@ -140,20 +143,26 @@ function buildSearchData(files, addToSearchData, loadedVersions) {
   const workerCount = Math.max(2, os.cpus().length)
 
   console.log(`docusaurus-lunr-search:: Start scanning documents in ${Math.min(workerCount, files.length)} threads`)
-  const gauge = new Guage()
-  gauge.show('scanning documents...')
+  const progressBar = new cliProgress.SingleBar({
+    format: 'Scanning documents |{bar}| {percentage}% | {value}/{total} files',
+    barCompleteChar: '\u2588',
+    barIncompleteChar: '\u2591',
+    hideCursor: true
+  })
+  progressBar.start(files.length, 0)
   let indexedDocuments = 0 // Documents that have added at least one value to the index
 
   return new Promise((resolve, reject) => {
     let nextIndex = 0
+    let processedCount = 0
 
     const handleMessage = ([isDoc, payload], worker) => {
-      gauge.pulse()
       if (isDoc) {
         addToSearchData(payload)
       } else {
         indexedDocuments += payload
-        gauge.show(`scanned ${nextIndex} files out of ${files.length}`, nextIndex / files.length)
+        processedCount++
+        progressBar.update(processedCount)
 
         if (nextIndex < files.length) {
           worker.postMessage(files[nextIndex++])
@@ -184,7 +193,7 @@ function buildSearchData(files, addToSearchData, loadedVersions) {
           activeWorkersCount--
           if (activeWorkersCount <= 0) {
             // No active workers left, we are done
-            gauge.hide()
+            progressBar.stop()
             resolve(indexedDocuments)
           }
         }
@@ -192,7 +201,6 @@ function buildSearchData(files, addToSearchData, loadedVersions) {
 
       activeWorkersCount++
       worker.postMessage(files[nextIndex++])
-      gauge.pulse()
     }
   })
 }

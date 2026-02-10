@@ -4,7 +4,7 @@ import { useHistory } from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { usePluginData } from '@docusaurus/useGlobalData';
 import useIsBrowser from "@docusaurus/useIsBrowser";
-import { HighlightSearchResults } from "./HighlightSearchResults";
+import { HighlightSearchResults } from "./HighlightSearchResults.jsx";
 const Search = props => {
   const initialized = useRef(false);
   const searchBarRef = useRef(null);
@@ -72,15 +72,20 @@ const Search = props => {
       Promise.all([
         getSearchDoc(),
         getLunrIndex(),
-        import("./DocSearch"),
+        import("./DocSearch.js"),
         import("./algolia.css")
       ]).then(([searchDocFile, searchIndex, { default: DocSearch }]) => {
         const { searchDocs, options } = searchDocFile;
         if (!searchDocs || searchDocs.length === 0) {
+          if (process.env.NODE_ENV !== "production") {
+            console.debug('docusaurus-lunr-search: Search index not available in development mode. Run a production build to enable search.');
+          }
           return;
         }
         initAlgolia(searchDocs, searchIndex, DocSearch, options);
         setIndexReady(true);
+      }).catch((err) => {
+        console.error('docusaurus-lunr-search: Failed to load search index', err);
       });
       initialized.current = true;
     }
@@ -126,7 +131,7 @@ const Search = props => {
       <input
         id="search_input_react"
         type="search"
-        placeholder={indexReady ? placeholder : 'Loading...'}
+        placeholder={indexReady ? placeholder : (process.env.NODE_ENV === "production" ? 'Loading...' : 'Search (build for index)')}
         aria-label="Search"
         className={clsx(
           "navbar__search-input",
