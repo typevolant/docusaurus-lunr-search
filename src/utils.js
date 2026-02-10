@@ -1,7 +1,10 @@
-const path = require('path')
-const fs = require('fs')
-const lunr = require('lunr')
-const minimatch = require('minimatch')
+import path from 'path'
+import fs from 'fs'
+import lunr from 'lunr'
+import { minimatch } from 'minimatch'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
 
 /**
  * Based on code from https://github.com/cmfcmf/docusaurus-search-local/
@@ -108,7 +111,7 @@ function getFilePaths(routesPaths, outDir, baseUrl, options = {}) {
     return [files, meta]
 }
 
-module.exports = {
+export {
     generateLunrClientJS,
     getFilePaths,
 }

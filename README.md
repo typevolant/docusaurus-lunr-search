@@ -1,6 +1,7 @@
 
 # docusaurus-lunr-search
-Offline Search for Docusaurus V2 or V3
+
+Offline Search for Docusaurus v3.9.2+
 
 [Demo Website](https://praveenn77.github.io/docusaurus-lunr-search-demo/)
 
@@ -8,34 +9,39 @@ Offline Search for Docusaurus V2 or V3
 
 [![npm version](https://badge.fury.io/js/docusaurus-lunr-search.svg)](https://www.npmjs.com/package/docusaurus-lunr-search)
 
-## Sample
-<p align="center">
-<img width="548" alt="image" src="https://github.com/praveenn77/docusaurus-lunr-search/assets/20218070/dbc54b61-077f-4e11-af27-8798cae8a572.gif">
-</p>
+## Screenshot
 
+![Docusaurus local search powered by lunr.js](https://github.com/praveenn77/docusaurus-lunr-search/assets/20218070/dbc54b61-077f-4e11-af27-8798cae8a572.gif)
 
 ## Prerequisites
-- Docusaurus V2 or V3
-- Node.js >= 12.X
 
-## How to Use ?
+- Docusaurus >v3.9.2
+- Node.js >= 20.X
+
+## How to Use?
+
 1. Install this package
-```
+
+```bash
 yarn add docusaurus-lunr-search
 ```
+
 or
-```
+
+```bash
 npm i docusaurus-lunr-search  --save
 ```
-If npm install fails to install with error `unable to resolve dependency tree`, run `npm i --legacy-peer-deps`
 
-2. Some time npm fails to install `lunr` package, in that case install `lunr` package manually
-```
+If npm install fails to install with error `unable to resolve dependency tree`, run `npm i --legacy-peer-deps`
+2. Sometimes npm fails to install `lunr` package, in that case install `lunr` package manually
+
+```bash
 npm i lunr --save
 ```
 
 3. Add the docusaurus-lunr-search plugin to your `docusaurus.config.js`
-```
+
+```js
 module.exports = {
   // ...
     plugins: [require.resolve('docusaurus-lunr-search')],
@@ -43,16 +49,20 @@ module.exports = {
 ```
 
 4. Then build your Docusaurus project
-```
+
+```bash
 yarn build
 ```
+
 or
-```
+
+```bash
 npm run build
 ```
 
 5. Serve your application
-```
+
+```bash
 yarn serve
 ```
 or
@@ -60,9 +70,10 @@ or
 npm run serve 
 ```
 
-Note: Docusaurus search information can only be generated from a production build. Local development is currently not supported.
+Note: The Docusaurus search index is only generated from a full project build. The local development server does not provide search functionality.
 
 ## Using an option (eg. `languages`) in the plugin
+
 ```
 module.exports = {
   // ...
@@ -71,6 +82,7 @@ module.exports = {
     }]],
 }
 ```
+
 Supports all the language listed here https://github.com/MihaiValentin/lunr-languages
 
 ## Options available
@@ -90,6 +102,7 @@ Supports all the language listed here https://github.com/MihaiValentin/lunr-lang
 | `fields`            | `object`  | `{}`      | Lunr field definitions, allows "boosting" priority for different sources of keywords (e.g. title, content, keywords) |
 
 ### Options to configure Lunr fields
+
 The `fields` config property is passed into Lunr directly as [field attributes](https://lunrjs.com/docs/lunr.Builder.html#field), and can be used to configure the relative priority of different field types (e.g. title, content, keywords). 
 
 docusaurus-lunr-search sets the default value for fields to:
@@ -119,20 +132,12 @@ indirect children (E.g. 'grandchildren' nodes).
 
 Check this [issue #115](https://github.com/praveenn77/docusaurus-lunr-search/issues/115) for more details.
 
-## Upgrading from docusaurus V2 to V3
-Update the `docusaurus-lunr-search` version to `3.3.0` or higher in `package.json` file
-
-Remove `src/theme/SearchBar` folder if you swizzled it before, if the folder does not exist then ignore this step.
-
-Do `yarn install` or `npm install` 
-
-If npm install fails to install with error `unable to resolve dependency tree`, run `npm i --legacy-peer-deps`
-
 ## Credits
 
-Thanks to [`algolia/docsearch.js`](https://github.com/algolia/docsearch), I modified it to create this search component 
+Thanks to [`algolia/docsearch.js`](https://github.com/algolia/docsearch), I modified it to create this search component.
 
 And thanks [cmfcmf](https://github.com/cmfcmf), I used the code from his library [docusaurus-search-local](https://github.com/cmfcmf/docusaurus-search-local) for multi-language support.
 
 ## Changelog
-Checkout the [releases](https://github.com/lelouch77/docusaurus-lunr-search/releases) page for changelog. 
+
+Checkout the [releases](https://github.com/lelouch77/docusaurus-lunr-search/releases) page for changelog.

@@ -1,17 +1,15 @@
-const { parentPort, workerData } = require('worker_threads')
+import { parentPort, workerData } from 'worker_threads'
 
-// unified imports
-const unified = require('unified')
-const parse = require('rehype-parse')
-const select = require('hast-util-select').select
-const selectAll = require('hast-util-select').selectAll
-const toText = require('hast-util-to-text')
-const is = require('unist-util-is')
-const toVfile = require('to-vfile')
+import { unified } from 'unified'
+import rehypeParse from 'rehype-parse'
+import { select, selectAll } from 'hast-util-select'
+import { toText } from 'hast-util-to-text'
+import { is } from 'unist-util-is'
+import { readSync } from 'to-vfile'
 
 function findArticleWithMarkdown(articles) {
   for (let i = 0; i < articles.length; i++) {
-    markdown = select('.markdown', articles[i])
+    let markdown = select('.markdown', articles[i])
     if (markdown) {
       return [markdown, articles[i]];
     }
@@ -23,7 +21,7 @@ function findArticleWithMarkdown(articles) {
 function* scanDocuments({ path, url }) {
   let vfile
   try {
-    vfile = toVfile.readSync(path)
+    vfile = readSync(path)
   } catch (e) {
     if (e.code !== 'ENOENT') {
       console.error(`docusaurus-lunr-search:: unable to read file ${path}`)
@@ -32,7 +30,7 @@ function* scanDocuments({ path, url }) {
     return
   }
 
-  const hast = unified().use(parse, { emitParseErrors: false }).parse(vfile)
+  const hast = unified().use(rehypeParse, { emitParseErrors: false }).parse(vfile)
 
   const articles = selectAll('article', hast)
   if (!articles) {
