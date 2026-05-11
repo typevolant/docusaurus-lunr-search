@@ -103,6 +103,17 @@ const Search = props => {
     [props.isSearchBarExpanded]
   );
 
+  const handleKeyDown = useCallback(
+    e => {
+      // Only trigger for Enter (13) or Space (32) key presses
+      if (e.keyCode === 13 || e.keyCode === 32) {
+        e.preventDefault();
+        toggleSearchIconClick(e);
+      }
+    },
+    [toggleSearchIconClick]
+  );
+
   let placeholder
   if (isBrowser) {
     loadAlgolia();
@@ -133,7 +144,7 @@ const Search = props => {
           "search-icon-hidden": props.isSearchBarExpanded
         })}
         onClick={toggleSearchIconClick}
-        onKeyDown={toggleSearchIconClick}
+        onKeyDown={handleKeyDown}
         tabIndex={0}
       />
       <input
