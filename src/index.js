@@ -100,7 +100,7 @@ export default function (context, options) {
         searchDocuments.push(d);
       }
 
-      const indexedDocuments = await buildSearchData(files, addToSearchData, loadedVersions)
+      const indexedDocuments = await buildSearchData(files, addToSearchData, loadedVersions, options)
       const lunrIndex = lunrBuilder.build()
       console.timeEnd('docusaurus-lunr-search:: Indexing time')
       console.log(`docusaurus-lunr-search:: indexed ${indexedDocuments} documents out of ${files.length}`)
@@ -135,12 +135,15 @@ export default function (context, options) {
   };
 };
 
-function buildSearchData(files, addToSearchData, loadedVersions) {
+function buildSearchData(files, addToSearchData, loadedVersions, options) {
   if (!files.length) {
     return Promise.resolve()
   }
   let activeWorkersCount = 0
-  const workerCount = Math.max(2, os.cpus().length)
+  // Use maxThreads from options if provided, otherwise fall back to CPU count.
+  // This is useful in containerized environments where os.cpus() returns the host's
+  // CPU count rather than the container's CPU limit.
+  const workerCount = Math.max(2, options.maxThreads || os.cpus().length)
 
   console.log(`docusaurus-lunr-search:: Start scanning documents in ${Math.min(workerCount, files.length)} threads`)
   const progressBar = new cliProgress.SingleBar({
