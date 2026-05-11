@@ -1,14 +1,15 @@
 {
   "name": "docusaurus-lunr-search",
-  "version": "3.6.0",
-  "description": "Offline search component for Docusaurus V3",
+  "version": "4.0.0",
+  "description": "Offline search component for Docusaurus v3.9.2+",
+  "type": "module",
   "main": "src/index.js",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "test": "mocha '**/__tests__/**/*.spec.js'"
+    "test": "mocha 'src/__tests__/**/*.spec.js'"
   },
   "homepage": "https://github.com/lelouch77/docusaurus-lunr-search/blob/master/README.md",
   "repository": {
@@ -34,6 +35,10 @@
     {
       "name": "Ris Adams",
       "url": "https://github.com/risadams"
+    },
+    {
+      "name": "Matt Fuller",
+      "url": "https://github.com/typevolant"
     }
   ],
   "keywords": [
@@ -44,30 +49,30 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "autocomplete.js": "^0.37.1",
+    "autocomplete.js": "^0.38.1",
+    "cli-progress": "^3.12.0",
     "clsx": "^2.1.1",
-    "gauge": "^3.0.2",
-    "hast-util-select": "^4.0.2",
-    "hast-util-to-text": "^2.0.1",
-    "hogan.js": "^3.0.2",
+    "hast-util-select": "^6.0.4",
+    "hast-util-to-text": "^4.0.2",
     "lunr": "^2.3.9",
-    "lunr-languages": "^1.4.0",
+    "lunr-languages": "^1.14.0",
     "mark.js": "^8.11.1",
-    "minimatch": "^3.1.2",
-    "rehype-parse": "^7.0.1",
-    "to-vfile": "^6.1.0",
-    "unified": "^9.2.2",
-    "unist-util-is": "^4.1.0"
+    "minimatch": "^10.0.1",
+    "mustache": "^4.2.0",
+    "rehype-parse": "^9.0.1",
+    "to-vfile": "^8.0.0",
+    "unified": "^11.0.5",
+    "unist-util-is": "^6.0.1"
   },
   "devDependencies": {
-    "mocha": "^8.4.0"
+    "mocha": "^11.7.5"
   },
   "peerDependencies": {
-    "@docusaurus/core": "^2.0.0-alpha.60 || ^2.0.0 || ^3.0.0",
-    "react": "^16.8.4 || ^17 || ^18 || ^19",
-    "react-dom": "^16.8.4 || ^17 || ^18 || ^19"
+    "@docusaurus/core": "^3.9.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "engines": {
-    "node": ">= 8.10.0"
+    "node": ">= 20.0.0"
   }
 }

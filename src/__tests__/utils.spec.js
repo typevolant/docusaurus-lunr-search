@@ -1,6 +1,6 @@
-const assert = require('assert')
-const path = require('path')
-const utils = require('../utils')
+import assert from 'assert'
+import path from 'path'
+import * as utils from '../utils.js'
 
 const outDir = '/out'
 const baseUrl = 'http://example.com/'
