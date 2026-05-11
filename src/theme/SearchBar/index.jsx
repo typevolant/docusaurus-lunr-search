@@ -1,6 +1,7 @@
 import React, { useRef, useCallback, useState, useEffect } from "react";
 import clsx from "clsx";
 import { useHistory } from "@docusaurus/router";
+import { translate } from "@docusaurus/Translate";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { usePluginData } from '@docusaurus/useGlobalData';
 import useIsBrowser from "@docusaurus/useIsBrowser";
@@ -105,9 +106,16 @@ const Search = props => {
   let placeholder
   if (isBrowser) {
     loadAlgolia();
-    placeholder = window.navigator.platform.startsWith("Mac") ?
-      'Search ⌘+K' : 'Search Ctrl+K'
-  }
+
+    placeholder = window.navigator.platform.startsWith("Mac") ? translate({
+      id: 'theme.SearchBar.placeholder.mac',
+      message:  'Search ⌘+K',
+      description: 'The placeholder text for the search bar on Mac'
+    }) : translate({
+      id: 'theme.SearchBar.placeholder',
+      message:  'Search Ctrl+K',
+      description: 'The placeholder text for the search bar'
+    });
 
   // auto focus search bar on page load
   useEffect(() => {
